@@ -42,7 +42,7 @@ class GmailAnalyzer:
         """Split an array into chunks of a specified size."""
         return [array[i : i + chunk_size] for i in range(0, len(array), chunk_size)]
 
-    def get_sender_statistics(self, max_emails, progress_callback=None) -> pd.DataFrame:
+    def get_sender_statistics(self, progress_callback=None) -> pd.DataFrame:
         """Analyze recent emails and return a DataFrame with sender information"""
         mail = self.connect()
 
@@ -50,9 +50,6 @@ class GmailAnalyzer:
         _, messages = mail.uid("search", None, "ALL")
 
         message_ids = messages[0].split()
-        message_ids = (
-            message_ids[-max_emails:] if len(message_ids) > max_emails else message_ids
-        )
 
         sender_data = {}
         total_messages = len(message_ids)

@@ -33,14 +33,6 @@ def main():
         st.session_state.app_password = st.text_input(
             "Gmail App Password", value=st.session_state.app_password, type="password"
         )
-        max_emails = st.number_input(
-            "Maximum emails to analyze",
-            min_value=10,
-            max_value=1000,
-            value=1000,
-            step=10,
-        )
-
         if st.button("Connect"):
             if st.session_state.email_address and st.session_state.app_password:
                 analyzer = GmailAnalyzer(
@@ -68,7 +60,7 @@ def main():
                     status_text.text(f"Processing email {current}/{total}")
 
                 st.session_state.email_data = analyzer.get_sender_statistics(
-                    max_emails, progress_callback=update_progress
+                    progress_callback=update_progress
                 )
 
                 progress_bar.empty()
@@ -90,7 +82,7 @@ def main():
 
                     with col2:
                         if st.button(
-                            "Delete all email(s) from this sender",
+                            f"Delete {row["Count"]} email(s) from this sender",
                             key=f"delete_{index}",
                         ):
                             deleted_emails_count = analyzer.delete_emails_from_sender(
